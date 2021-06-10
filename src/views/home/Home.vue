@@ -5,6 +5,7 @@
     </nav-bar>
     <home-swiper :banner="banner" />
     <home-recommend-view :recommend="recommend" />
+    <home-fashion-view />
 
   </div>
 </template>
@@ -13,6 +14,7 @@
   import NavBar from 'components/common/navbar/NavBar'
   import HomeSwiper from './children/HomeSwiper'
   import HomeRecommendView from './children/HomeRecommendView'
+  import HomeFashionView from './children/HomeFashionView'
 
   import {getMultidata} from 'network/home'
 
@@ -21,7 +23,8 @@
     components: {
       NavBar,
       HomeSwiper,
-      HomeRecommendView
+      HomeRecommendView,
+      HomeFashionView
     },
     data() {
       return {
@@ -39,8 +42,19 @@
 </script>
 
 <style scoped>
+  #home {
+    padding-top: 44px;
+    height: 1200px;
+  }
+
   #home-nav {
     background-color: var(--color-tint);
     color: #fff;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9;
   }
 </style>
