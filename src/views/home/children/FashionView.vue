@@ -8,7 +8,7 @@
 
 <script>
   export default {
-    name: 'HomeFashionView'
+    name: 'FashionView'
   }
 </script>
 
