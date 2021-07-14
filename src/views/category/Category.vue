@@ -1,7 +1,8 @@
 <template>
   <!-- <div>分类</div> -->
-  <div class="wrapper">
+  <div class="wrapper" ref="wrapper">
     <ul class="content">
+      <div @click="btnClick">按钮</div>
       <li>商品数据1</li>
       <li>商品数据2</li>
       <li>商品数据3</li>
@@ -112,7 +113,24 @@
   export default {
     name: "Category",
     mounted() {
-      new BScroll('.wrapper')
+      console.log(this.$refs.wrapper);
+      const bs = new BScroll(this.$refs.wrapper, {
+        probeType: 2,
+        pullUpLoad: true,
+        click: true
+      });
+      // bs.on('scroll', pos => {
+      //   console.log(pos);
+      // })
+      bs.on('pullingUp', () => {
+        console.log('上拉加载更多');
+        bs.finishPullUp();
+      })
+    },
+    methods: {
+      btnClick() {
+        console.log('btnClick');
+      }
     }
   };
 </script>

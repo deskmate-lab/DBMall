@@ -3,12 +3,15 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
-    <home-swiper :banner="banner" />
-    <recommend-view :recommend="recommend" />
-    <fashion-view />
-    <!-- 父组件内部的子组件标签上监听自定义事件，且不能写参数 -->
-    <tab-control :titles="titles" @tab-click="tabClick" />
-    <goods-list :goods="goodsInfo" />
+    <scroll class="wrapper">
+      <home-swiper :banner="banner" />
+      <recommend-view :recommend="recommend" />
+      <fashion-view />
+      <!-- 父组件内部的子组件标签上监听自定义事件，且不能写参数 -->
+      <tab-control :titles="titles" @tab-click="tabClick" />
+      <goods-list :goods="goodsInfo" />
+      <back-top />
+    </scroll>
   </div>
 </template>
 
@@ -20,6 +23,8 @@
   import NavBar from 'components/common/navbar/NavBar'
   import TabControl from 'components/content/tabcontrol/TabControl'
   import GoodsList from 'components/content/goodsList/GoodsList'
+  import Scroll from 'components/common/scroll/Scroll'
+  import BackTop from 'components/common/backtop/BackTop'
 
   import {getMultidata, getGoodsList} from 'network/home'
 
@@ -31,7 +36,9 @@
       FashionView,
       NavBar,
       TabControl,
-      GoodsList
+      GoodsList,
+      Scroll,
+      BackTop    
     },
     data() {
       return {
@@ -88,14 +95,16 @@
             this.currentType = 'sell';
             break;
         }
-      }
+      },
     }
   };
 </script>
 
 <style scoped>
   #home {
-    padding-top: 44px;
+    /* padding-top: 44px; */
+    height: 100vh;
+    position: relative;
   }
 
   .home-nav {
@@ -109,5 +118,15 @@
     z-index: 9;
   }
 
-  
+  .wrapper {
+    overflow: hidden;
+
+    /* #home或者.wrapper必须设置高度 */
+    /* 通过top、bottom撑开.wrapper */
+    position: absolute;
+    top: 44px;
+    bottom: 49px;
+    left: 0;
+    right: 0;
+  }
 </style>

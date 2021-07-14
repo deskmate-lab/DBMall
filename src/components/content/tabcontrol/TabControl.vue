@@ -41,8 +41,8 @@
     line-height: 40px;
     background-color: #fff;
 
-    position: sticky;
-    top: 44px;
+    /* position: sticky;
+    top: 44px; */
     margin-bottom: 10px;
     z-index: 8;
   }
