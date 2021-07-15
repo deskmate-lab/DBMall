@@ -8,14 +8,28 @@
 
 <script>
   import BScroll from 'better-scroll'
-  
+
   export default {
     name: 'Scroll',
+    props: {
+      probeType: {
+        type: Number,
+        default: 0
+      }
+    },
+    data() {
+      return {
+        bs: null
+      }
+    },
     mounted() {
-      const bs = new BScroll(this.$refs.wrapper, {
+      this.bs = new BScroll(this.$refs.wrapper, {
         click: true,
-        observeDOM: true
+        probeType: this.probeType
       });
+      this.bs.on('scroll', pos => {
+        this.$emit('show-back-top', pos)
+      })
     }
   }
 </script>

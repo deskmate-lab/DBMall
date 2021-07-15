@@ -3,15 +3,17 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
-    <scroll class="wrapper">
+    <!-- 通过绑定probeType属性决定是否实时监听Scroll组件的滚动 -->
+    <scroll class="wrapper" ref="scroll" @show-back-top="showBackTop" :probeType="3">
       <home-swiper :banner="banner" />
       <recommend-view :recommend="recommend" />
       <fashion-view />
       <!-- 父组件内部的子组件标签上监听自定义事件，且不能写参数 -->
       <tab-control :titles="titles" @tab-click="tabClick" />
       <goods-list :goods="goodsInfo" />
-      <back-top />
     </scroll>
+    <!-- 注：组件原生事件如click是不能直接监听的，必须添加native修饰符才能直接监听 -->
+    <back-top @click.native="backToTop" v-show="isShowBackTop" />
   </div>
 </template>
 
@@ -50,7 +52,8 @@
           new: {page: 1, list: []},
           sell: {page: 1, list: []}
         },
-        currentType: 'pop'
+        currentType: 'pop',
+        isShowBackTop: false
       }
     },
     computed: {
@@ -96,6 +99,13 @@
             break;
         }
       },
+      backToTop() {
+        // 调用Scroll组件内部的scrollTo方法
+        this.$refs.scroll.bs.scrollTo(0, 0, 500)
+      },
+      showBackTop(pos) {
+        this.isShowBackTop = pos.y < -1000;
+      }
     }
   };
 </script>
