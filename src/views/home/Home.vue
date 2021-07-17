@@ -3,13 +3,19 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
+    <tab-control class="tab-control-copy" ref="tabControlCopy" :titles="titles" @tab-click="tabClick" v-show="isTabControlFixed" />
     <!-- 通过绑定probeType属性决定是否实时监听Scroll组件的滚动 -->
-    <scroll class="wrapper" ref="scroll" @show-back-top="showBackTop" :probeType="3">
-      <home-swiper :banner="banner" />
+    <scroll class="wrapper"
+            @get-position="getPosition"
+            :probeType="3"
+            :pullUpLoad="true"
+            ref="scroll"
+            @pulling-up="pullingUp">
+      <home-swiper :banner="banner" @swiper-img-load="swiperImgLoad" />
       <recommend-view :recommend="recommend" />
       <fashion-view />
       <!-- 父组件内部的子组件标签上监听自定义事件，且不能写参数 -->
-      <tab-control :titles="titles" @tab-click="tabClick" />
+      <tab-control ref="tabControl" :titles="titles" @tab-click="tabClick" />
       <goods-list :goods="goodsInfo" />
     </scroll>
     <!-- 注：组件原生事件如click是不能直接监听的，必须添加native修饰符才能直接监听 -->
@@ -29,6 +35,7 @@
   import BackTop from 'components/common/backtop/BackTop'
 
   import {getMultidata, getGoodsList} from 'network/home'
+  import {debounce} from 'common/utils'
 
   export default {
     name: "Home",
@@ -53,7 +60,9 @@
           sell: {page: 1, list: []}
         },
         currentType: 'pop',
-        isShowBackTop: false
+        isShowBackTop: false,
+        isTabControlFixed: false,
+        tabControlOffsetTop: 0,
       }
     },
     computed: {
@@ -69,6 +78,17 @@
       this.getGoodsList('pop');
       this.getGoodsList('new');
       this.getGoodsList('sell');
+    },
+    mounted() {
+      // 在mounted钩子内部才能通过$refs取到DOM元素
+      // 'item-img-load'事件会被频繁触发，由此this.$refs.scroll.bs.refresh()会被频繁调用，因此需要防抖(即只要每个delay时间间隔以内DOM发生了改变就不会触发refresh，DOM结构超过delay时长不改变即触发refresh，所有item加载完毕等待delay时长以后必然会触发一次refresh)
+      const refresh = debounce(this.$refs.scroll.refresh, 200)
+      this.$bus.$on('item-img-load', () => {
+        refresh()
+      })
+    },
+    destroyed() {
+      console.log('home');
     },
     methods: {
       // 网络请求方法
@@ -98,13 +118,27 @@
             this.currentType = 'sell';
             break;
         }
+        // 使两个tabControl当前活跃的currentIndex始终保持一致
+        this.$refs.tabControl.currentIndex = index;
+        this.$refs.tabControlCopy.currentIndex = index;
       },
       backToTop() {
         // 调用Scroll组件内部的scrollTo方法
         this.$refs.scroll.bs.scrollTo(0, 0, 500)
       },
-      showBackTop(pos) {
+      getPosition(pos) {
+        // backTop的显示和隐藏
         this.isShowBackTop = pos.y < -1000;
+        // tabControl的固定定位
+        this.isTabControlFixed = -pos.y > this.tabControlOffsetTop
+      },
+      pullingUp() {
+        // 请求下一页数据
+        this.getGoodsList(this.currentType)
+      },
+      swiperImgLoad() {
+        // 获取tabControl的offsetTop，组件是不存在offsetTop属性的，必须通过组件的$el获取组件对应的DOM元素
+        this.tabControlOffsetTop = this.$refs.tabControl.$el.offsetTop;
       }
     }
   };
@@ -121,10 +155,17 @@
     background-color: var(--color-tint);
     color: #fff;
 
-    position: fixed;
+    /* 使用better-scroll确定了滚动的wrapper和content，无论如何nav都不可能滚动，因此不再需要固定定位 */
+    /* position: fixed;
     top: 0;
     left: 0;
     right: 0;
+    z-index: 9; */
+  }
+
+  .tab-control-copy {
+    /* 只有有定位的元素才能设置z-index */
+    position: relative;
     z-index: 9;
   }
 
@@ -139,4 +180,5 @@
     left: 0;
     right: 0;
   }
+
 </style>

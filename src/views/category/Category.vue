@@ -113,7 +113,6 @@
   export default {
     name: "Category",
     mounted() {
-      console.log(this.$refs.wrapper);
       const bs = new BScroll(this.$refs.wrapper, {
         probeType: 2,
         pullUpLoad: true,

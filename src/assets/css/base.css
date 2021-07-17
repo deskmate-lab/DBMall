@@ -27,11 +27,16 @@ body {
   color: var(--color-text);
   /* vw：视口单位，1vw等于视口宽度的1%。 */
   width: 100vw;
+  font-size: var(--font-size);
 }
 
 a {
   color: var(--color-text);
   text-decoration: none;
+}
+
+li {
+  list-style: none;
 }
 
 .clear-fix::after {

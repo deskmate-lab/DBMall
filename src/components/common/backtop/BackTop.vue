@@ -15,14 +15,14 @@
   .back-top {
     position: fixed;
     right: 10px;
-    bottom: 55px;
+    bottom: 100px;
     background-color: #fff;
     border-radius: 10%;
     z-index: 100;
   }
 
   .back-top img {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
   }
 </style>

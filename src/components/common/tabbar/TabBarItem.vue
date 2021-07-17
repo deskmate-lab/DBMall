@@ -12,11 +12,12 @@
     name: "TabBarItem",
     // 先给父组件App中的<tab-bar-item>绑定link属性，然后通过父向子通信拿到link的值
     props: {
+      // MainTabBar父组件中给每个<tab-bar-item>添加了link属性，属性值为字符串，直接通过props就可以传递给子组件，不需要再使用v-bind指令
       link: String,
       activeColor: {
         type: String,
         // 让开发者使用组件时自己定义激活时的颜色
-        default: 'deepPink'
+        default: 'LightCoral'
       },
     },
     computed: {

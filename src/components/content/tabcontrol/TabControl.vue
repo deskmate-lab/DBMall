@@ -38,13 +38,13 @@
     display: flex;
     justify-content: space-around;
     height: 40px;
-    line-height: 40px;
+    line-height: 30px;
     background-color: #fff;
 
     /* position: sticky;
-    top: 44px; */
-    margin-bottom: 10px;
-    z-index: 8;
+    top: 44px;
+    z-index: 8; */
+    padding-bottom: 6px;
   }
 
   .tab-control-item {
