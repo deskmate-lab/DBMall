@@ -41,7 +41,6 @@
 
 <style scoped>
   .tab-bar-item {
-    height: 49px;
     text-align: center;
   }
 

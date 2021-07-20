@@ -37,12 +37,13 @@
   .base-info {
     padding: 20px 12px;
     padding-bottom: 20px;
+    border-bottom: 5px solid rgb(150, 150, 150, .12);
   }
 
   .title {
     margin-bottom: 8px;
-    color: #000;
-    font-size: 18px;
+    color: #333;
+    font-size: 16px;
     text-align: justify;
     /* 这行必加，兼容ie浏览器 */
     text-justify: distribute-all-lines;
@@ -80,7 +81,7 @@
     display: inline-block;
     line-height: 1.5;
     margin: 0 8px 0 12px;
-    color: #000;
+    color: #333;
     position: relative;
   }
 

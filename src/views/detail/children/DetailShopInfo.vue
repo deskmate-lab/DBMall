@@ -1,5 +1,6 @@
 <template>
-  <div class="shop-info">
+  <!-- 如果shopInfo数据没有请求过来，则不予显示 -->
+  <div class="shop-info" v-if="Object.keys(shopInfo).length !== 0">
     <img :src="shopInfo.logo" />
     <span class="shop-name">{{shopInfo.name}}</span>
     <div class="other-info">
@@ -44,8 +45,7 @@
 
 <style scoped>
   .shop-info {
-    padding: 24px 12px;
-    border-top: 5px solid rgb(150, 150, 150, .12);
+    padding: 20px 12px;
     border-bottom: 5px solid rgb(150, 150, 150, .12);
   }
 
@@ -64,7 +64,7 @@
 
   .other-info {
     display: flex;
-    color: #000;
+    color: #333;
     margin-top: 10px;
   }
 
@@ -114,7 +114,7 @@
   }
 
   .shop-enter {
-    margin-top: 20px;
+    margin: 30px 0 20px;
     text-align: center;
   }
 

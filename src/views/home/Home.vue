@@ -7,8 +7,8 @@
     <!-- 通过绑定probeType属性决定是否实时监听Scroll组件的滚动 -->
     <scroll class="wrapper"
             @get-position="getPosition"
-            :probeType="3"
-            :pullUpLoad="true"
+            :probe-type="3"
+            :pull-up-load="true"
             ref="scroll"
             @pulling-up="pullingUp">
       <home-swiper :banner="banner" @swiper-img-load="swiperImgLoad" />
@@ -63,6 +63,8 @@
         isShowBackTop: false,
         isTabControlFixed: false,
         tabControlOffsetTop: 0,
+        lastY: 0,
+        itemImgLoadListener: null
       }
     },
     computed: {
@@ -83,12 +85,23 @@
       // 在mounted钩子内部才能通过$refs取到DOM元素
       // 'item-img-load'事件会被频繁触发，由此this.$refs.scroll.bs.refresh()会被频繁调用，因此需要防抖(即只要每个delay时间间隔以内DOM发生了改变就不会触发refresh，DOM结构超过delay时长不改变即触发refresh，所有item加载完毕等待delay时长以后必然会触发一次refresh)
       const refresh = debounce(this.$refs.scroll.refresh, 200)
-      this.$bus.$on('item-img-load', () => {
+      this.itemImgLoadListener = () => {
         refresh()
-      })
+      }
+      this.$bus.$on('item-img-load', this.itemImgLoadListener)
     },
-    destroyed() {
-      console.log('home');
+    // keep-alive包裹的组件提供activiated()和deactiviated()两个钩子
+    activated() {
+      this.$refs.scroll.bs.scrollTo(0, this.lastY, 0)
+      // 防止出现回到Home不能滚动的情况
+      this.$refs.scroll.bs.refresh()
+    },
+    // 导航离开Home组件路由时调用，可以访问组件实例的this
+    beforeRouteLeave(to, from, next) {
+      this.lastY = this.$refs.scroll.bs.y;
+      // 取消Home对事件总线的监听
+      // this.$bus.$off('item-img-load', this.itemImgLoadListener)
+      next()
     },
     methods: {
       // 网络请求方法
@@ -147,6 +160,7 @@
 <style scoped>
   #home {
     /* padding-top: 44px; */
+    /* #home必须指定高度才能使用定位撑开.wrapper */
     height: 100vh;
     position: relative;
   }
@@ -176,9 +190,9 @@
     /* 通过top、bottom撑开.wrapper */
     position: absolute;
     top: 44px;
+    right: 0;
     bottom: 49px;
     left: 0;
-    right: 0;
   }
 
 </style>

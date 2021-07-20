@@ -10,6 +10,13 @@ export function getDetailData(iid) {
   })
 }
 
+// 请求推荐数据
+export function getRecommend(iid) {
+  return request({
+    url: '/recommend'
+  })
+}
+
 export class BaseInfo {
   constructor(itemInfo, columns, services) {
     this.title = itemInfo.title;
@@ -34,5 +41,12 @@ export class ShopInfo {
     this.sales = shopInfo.cSells;
     this.goodsCount = shopInfo.cGoods;
     this.score = shopInfo.score;
+  }
+}
+
+export class ParamsInfo {
+  constructor(itemParams) {
+    this.sizeInfo = itemParams.rule.tables[0];
+    this.productInfo = itemParams.info.set;
   }
 }

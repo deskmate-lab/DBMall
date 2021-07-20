@@ -1,7 +1,7 @@
 <template>
   <div class="goods-item" @click="goodsItemClick">
     <!-- vue中通过load事件监听图片加载是否完成 -->
-    <img :src="goodsItem.show.img" @load="imgLoad" />
+    <img :src="imgSrc" @load="imgLoad" />
     <div class="goods-item-info">
       <p>{{goodsItem.title}}</p>
       <span class="item-price">{{goodsItem.price}}</span>
@@ -21,12 +21,19 @@
         }
       }
     },
+    computed: {
+      imgSrc() {
+        return this.goodsItem.show ? this.goodsItem.show.img : this.goodsItem.image
+      }
+    },
     methods: {
       imgLoad() {
         this.$bus.$emit('item-img-load')
       },
       goodsItemClick() {
-        this.$router.push('/detail/' + this.goodsItem.iid)
+        if(this.goodsItem.iid) {
+          this.$router.push('/detail/' + this.goodsItem.iid)
+        }
       }
     }
   }
@@ -75,6 +82,7 @@
     width: 14px;
     height: 14px;
     background: url('~assets/img/goodsList/collect.png') 0 0/14px 14px no-repeat;
+    /* 伪元素必须有定位或者转换成inline-block才能显示背景图片 */
     position: absolute;
     left: -14px;
   }
