@@ -17,7 +17,7 @@
       activeColor: {
         type: String,
         // 让开发者使用组件时自己定义激活时的颜色
-        default: 'LightCoral'
+        default: '#000'
       },
     },
     computed: {

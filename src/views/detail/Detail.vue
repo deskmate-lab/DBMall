@@ -14,7 +14,7 @@
       <detail-recommend :recommend-info="recommendInfo" ref="recommend" />
     </scroll>
     <back-top @click.native="backToTop" v-show="isShowBackTop" />
-    <detail-bottom-bar />
+    <detail-bottom-bar @add-to-cart="addToCart" />
   </div>
 </template>
 
@@ -52,6 +52,7 @@
     },
     data() {
       return {
+        iid: '',
         topImages: [],
         baseInfo: {},
         shopInfo: {},
@@ -72,6 +73,8 @@
       }
     },
     created() {
+      this.iid = this.$route.params.iid;
+      
       this._getDetailData()
       this._getRecommend()
       // 获取offsetTop并防抖
@@ -105,6 +108,18 @@
       backToTop() {
         this.$refs.scroll.bs.scrollTo(0, 0, 500)
       },
+      addToCart() {
+        // 每点击"加入购物车"，创建一个新的product对象保存当前商品信息
+        const product = {};
+        product.iid = this.iid;
+        product.image = this.topImages[0];
+        product.title = this.baseInfo.title;
+        product.desc = this.detailInfo.desc;
+        product.price = parseFloat(this.baseInfo.nowPrice).toFixed(2);
+        product.count = 1;
+        // dispatch到actions中
+        this.$store.dispatch('addToCart', product)
+      },
 
       _getDetailData() {
         getDetailData(this.$route.params.iid).then(result => {
@@ -121,9 +136,7 @@
           // 保存商品参数信息
           this.paramsInfo = new ParamsInfo(res.itemParams);
           // 保存用户评论数据
-          if(res.rate.cRate !== 0) {
-            this.commentInfo = res.rate;
-          }
+          this.commentInfo = res.rate;
         })
       },
       _getRecommend() {

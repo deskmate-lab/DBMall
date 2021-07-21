@@ -12,7 +12,7 @@
       <div class="item-icon collect" @click="collectGoods" :class="{collected: isCollected}"></div>
       <span>收藏</span>
     </div>
-    <div class="add-cart">加入购物车</div>
+    <div class="add-cart" @click="addToCart">加入购物车</div>
     <div class="buy">购买</div>
   </div>
 </template>
@@ -28,6 +28,9 @@
     methods: {
       collectGoods() {
         this.isCollected = !this.isCollected;
+      },
+      addToCart() {
+        this.$emit('add-to-cart')
       }
     }
 }
@@ -47,13 +50,14 @@
   }
 
   .item-icon {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
 
     /* div水平居中 */
     margin-left: 50%;
     transform: translateX(-50%);
-    /* margin-top: 2px; */
+    margin-top: 4px;
+    margin-bottom: 2px;
 
     background-image: url('~assets/img/detail/detail_bottom.png');
     background-size: 100%;
@@ -61,11 +65,11 @@
   }
 
   .service {
-    background-position: 0 -66px;
+    background-position: 0 -57px;
   }
 
   .shop {
-    background-position: 0 -124px;
+    background-position: 0 -107px;
   }
 
   .collect {
@@ -73,13 +77,13 @@
   }
 
   .collected {
-    background-position: 0 -33px;
+    background-position: 0 -28px;
   }
 
   .add-cart,
   .buy {
     /* 固定右边两栏的宽度，左边自适应 */
-    flex: 0 0 80px;
+    flex: 0 0 26%;
     line-height: 49px;
     font-size: 16px;
   }

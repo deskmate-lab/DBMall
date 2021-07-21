@@ -22,6 +22,7 @@ export class BaseInfo {
     this.title = itemInfo.title;
     this.newPrice = itemInfo.price;
     this.oldPrice = itemInfo.oldPrice;
+    this.nowPrice = itemInfo.lowNowPrice;
     this.discountDesc = itemInfo.discountDesc;
     this.discountBgColor = itemInfo.discountBgColor;
 

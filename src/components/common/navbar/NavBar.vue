@@ -22,10 +22,12 @@
 
   .nav-bar .left, .right {
     width: 60px;
+    text-align: center;
   }
 
   .nav-bar .center {
     flex: 1;
     text-align: center;
+    font-size: 16px;
   }
 </style>

@@ -4,7 +4,8 @@
       <span class="title">用户评价 ({{commentInfo.cRate}})</span>
       <span class="more">更多</span>
     </div>
-    <div class="comment-content">
+    <!-- 如果用户评价数cRate为0，则.comment-content不用渲染出来 -->
+    <div class="comment-content" v-if="commentInfo.cRate !== 0">
       <img :src="commentInfo.list[0].user.avatar" />
       <span>{{commentInfo.list[0].user.uname}}</span>
       <p>{{commentInfo.list[0].content}}</p>

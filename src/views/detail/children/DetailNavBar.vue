@@ -1,9 +1,10 @@
 <template>
   <nav-bar class="detail-nav">
     <span class="back-home" slot="left" @click="backToHome"></span>
-    <div slot="center">
-      <span v-for="(item, index) in navTitles" :key="index" @click="navClick(index)" :class="{active: index === currentIndex}">{{item}}</span>
+    <div class="nav-title" slot="center">
+      <span v-for="(item, index) in navTitle" :key="index" @click="navClick(index)" :class="{active: index === currentIndex}">{{item}}</span>
     </div>
+    <img class="go-to-cart" slot="right" src="~assets/img/detail/cart.png" @click="goToCart" />
   </nav-bar>
 </template>
 
@@ -17,7 +18,7 @@
     },
     data() {
       return {
-        navTitles: ['商品', '评论', '参数', '推荐'],
+        navTitle: ['商品', '评论', '参数', '推荐'],
         currentIndex: 0
       }
     },
@@ -28,6 +29,9 @@
       navClick(index) {
         this.currentIndex = index;
         this.$emit('nav-click', index)
+      },
+      goToCart() {
+        this.$router.replace('/cart');
       }
     }
   }
@@ -38,17 +42,22 @@
     display: inline-block;
     width: 28px;
     height: 28px;
-    margin: 8px 14px;
+    margin-top: 8px;
     background: url('~assets/img/detail/back.png') 0 0/28px 28px no-repeat;
   }
 
-  .detail-nav div {
+  .nav-title {
     display: flex;
     justify-content: space-evenly;
-    font-size: 16px;
   }
 
   .active {
     color: var(--color-highlight-text);
+  }
+
+  .go-to-cart {
+    width: 22px;
+    height: 22px;
+    margin-top: 10px;
   }
 </style>
