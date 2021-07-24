@@ -1,7 +1,9 @@
 <template>
   <ul class="cart-list">
     <li v-for="(item, index) in $store.state.cartList" :key="index">
-      <span class="select"></span>
+      <!-- 根据每个item的checked属性决定<check-button>是否处于选中状态 -->
+        <!-- 注：直接监听组件的点击，需要使用.native修饰符！！！ -->
+      <check-button class="check-button" :is-checked="item.checked" @click.native="toggle(item)" />
       <div class="item-image">
         <img :src="item.image" />
       </div>
@@ -16,8 +18,20 @@
 </template>
 
 <script>
+  import CheckButton from 'components/common/checkbutton/CheckButton'
+
   export default {
-    name: 'CartList'
+    name: 'CartList',
+    components: {
+      CheckButton
+    },
+    methods: {
+      toggle(item) {
+        // commit到mutations中切换checked属性
+        // 必须修改model里的数据--数据驱动视图
+        this.$store.commit('toggle', item)
+      }
+    }
   }
 </script>
 
@@ -27,12 +41,9 @@
     border-bottom: 1px solid rgb(150, 150, 150, .3);
   }
 
-  .select {
+  .check-button {
     float: left;
-    width: 20px;
-    height: 20px;
     margin-top: 40px;
-    background: url('~assets/img/cart/selected.png') 0 0/100% 100%;
   }
 
   .item-image {

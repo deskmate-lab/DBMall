@@ -116,7 +116,10 @@
         product.title = this.baseInfo.title;
         product.desc = this.detailInfo.desc;
         product.price = parseFloat(this.baseInfo.nowPrice).toFixed(2);
+
         product.count = 1;
+        // 商品添加到购物车默认选中
+        product.checked = true;
         // dispatch到actions中
         this.$store.dispatch('addToCart', product)
       },
@@ -124,7 +127,6 @@
       _getDetailData() {
         getDetailData(this.$route.params.iid).then(result => {
           const res = result.result;
-          console.log(res);
           // 保存轮播图图片
           this.topImages = res.itemInfo.topImages;
           // 通过创建类的实例来保存商品标题、价格、销量等基本信息

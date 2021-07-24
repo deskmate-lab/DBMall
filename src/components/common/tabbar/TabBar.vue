@@ -22,7 +22,7 @@
     bottom: 0;
 
     background-color: #f5f5f5;
-    box-shadow: 0 -5px 10px rgba(150, 150, 150, 0.15);
+    box-shadow: 0 -5px 15px rgba(150, 150, 150, 0.15);
 
     font-size: 12px;
   }
